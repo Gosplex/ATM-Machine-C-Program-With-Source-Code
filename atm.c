@@ -5,12 +5,13 @@
 
 // FUNCTIONS
 void mainMenu();
+void menuExit();
 
 int main()
 {
     int option, age, accountPin, accountNum, depositAmount, withdrawalAmount, totalAmount;
     totalAmount = 0;
-    int receiptAccountNum, transferAmount;
+    int receiptAccountNum, transferAmount, newAccountPin, choose;
     char receipientName[225];
     char fname[20];
     char lname[20];
@@ -18,6 +19,8 @@ int main()
     bool again = true;
 
     srand(time(0));
+
+    // insert code here...
 
     while (again)
     {
@@ -29,7 +32,7 @@ int main()
 
         switch (option)
         {
-        case 1:
+        case 1: // create account...
             printf("\nEnter First Name: ");
             scanf(" %s", fname);
             printf("Enter Last Name: ");
@@ -56,7 +59,7 @@ int main()
                 {
                     printf("%d", (rand() % 10));
                 }
-                printf("\n Account Pin: %d \n", accountPin);
+                printf("\n Account Pin: %d \n\n\n", accountPin);
             }
             else
             {
@@ -64,11 +67,15 @@ int main()
                 printf("You are underage!\n\n");
             }
             break;
-        case 2:
+
+
+        case 2: // deposit money
             printf("Deposit Amount: ");
             scanf("%d", &depositAmount);
             printf("Enter Account Pin: ");
             scanf("%d", &option);
+
+            system("cls");
 
             if (option == accountPin)
             {
@@ -79,20 +86,39 @@ int main()
             {
                 printf("Incorrect Pin!\n\n");
             }
-            system("cls");
+            
             break;
 
-        case 3:
+
+        case 3: // transfer funds
             printf("Enter Receipient Account Number: ");
             scanf("%d", &receiptAccountNum);
             printf("Enter Receipient Name: ");
             scanf("%s", receipientName);
-            printf("Enter Deposit Amount: ");
+            printf("Enter Transfer Amount: ");
             scanf("%d", &transferAmount);
             printf("Enter Account Pin: ");
             scanf("%d", &accountPin);
 
             if (totalAmount < transferAmount)
+            {
+                printf("Insufficient Balance\n\n");
+            }
+            else
+            {
+                printf("Transaction Successful!\n\n");
+                totalAmount -= transferAmount;
+            }
+            break;
+
+
+        case 4: // withdraw funds
+            printf("Enter Withdrwal Amount: ");
+            scanf("%d", &withdrawalAmount);
+            printf("Enter Account Pin: ");
+            scanf("%d", &accountPin);
+
+            if (totalAmount < withdrawalAmount)
             {
                 printf("Insufficient Balance\n\n");
             }
@@ -103,20 +129,51 @@ int main()
             else
             {
                 printf("Transaction Successful!\n\n");
-                totalAmount -= transferAmount;
+                totalAmount -= withdrawalAmount;
             }
             break;
 
-        case 4:
-            printf("Enter Withdrwal Amount: ");
-            scanf("%d", &withdrawalAmount);
-            printf("Enter Account Pin: ");
-            scanf("%d", &accountPin);
-            break;
 
+            case 5: // change account pin
+                printf("Enter Old Account Pin: ");
+                scanf("%d", &accountPin);
+                printf("Enter New Account Pin");
+                scanf("%d", &newAccountPin);
+
+                if (accountPin == accountPin)
+                {
+                    printf("Pin Changed Successful!\n");
+                    accountPin = newAccountPin;
+                } else
+                {
+                    printf("Failed!\n\n");
+                }
+                
+                break;
+                
+
+            case 6: // check balance
+                printf("Your Current Balance: $%d\n\n", totalAmount);
+                break;
         default:
-            printf("Invalid");
+            printf("Invalid Operation");
             break;
+        }
+
+        printf("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
+        printf("Would you like to do another transaction:\n");
+        printf("< 1 > Yes\n");
+        printf("< 2 > No\n\n");
+
+        printf("Enter Option: ");
+        scanf("%d", &choose);
+
+        system("CLS");
+
+        if (choose == 2)
+        {
+            again = false;
+            menuExit();
         }
     }
 
@@ -133,5 +190,15 @@ void mainMenu()
     printf("Press 2 - DEPOSIT \n");
     printf("Press 3 - TRANSFER FUND \n");
     printf("Press 4 - WITHDRAW CASH \n");
-    printf("Press 5 - CHANGE PAYMENT PIN \n\n");
-}
+    printf("Press 5 - CHANGE PAYMENT PIN \n");
+    printf("Press 6 - CHECK BALANCE \n\n");
+} // main menu
+
+
+void menuExit()
+{
+    printf("--------------Take your receipt!!!------------------\n");
+    printf("-----Thank you for using ATM Banking Machine!!!-----\n");
+    printf("-----BROUGHT TO YOU BY sourcecode.com-----\n");
+
+} // exit menu
