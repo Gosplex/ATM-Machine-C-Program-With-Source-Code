@@ -68,7 +68,6 @@ int main()
             }
             break;
 
-
         case 2: // deposit money
             printf("Deposit Amount: ");
             scanf("%d", &depositAmount);
@@ -81,14 +80,18 @@ int main()
             {
                 totalAmount += depositAmount;
                 printf("Deposit of %d Successful!\n\n", depositAmount);
+
+                // generate receipt
+                FILE *fpointer = fopen("deposit.pdf", "w");
+                fprintf(fpointer, "You Deposited %d Successfully!", depositAmount);
+                fclose(fpointer);
             }
             else
             {
                 printf("Incorrect Pin!\n\n");
             }
-            
-            break;
 
+            break;
 
         case 3: // transfer funds
             printf("Enter Receipient Account Number: ");
@@ -108,9 +111,15 @@ int main()
             {
                 printf("Transaction Successful!\n\n");
                 totalAmount -= transferAmount;
+
+                // generate receipt
+                FILE *fpointer = fopen("transfer.pdf", "a");
+                fprintf(fpointer, "Transferred the sum of $%d to the following details: \n", transferAmount);
+                fprintf(fpointer, "Account Name: %c \n", receipientName);
+                fprintf(fpointer, "Account Number: %d", receiptAccountNum);
+                fclose(fpointer);
             }
             break;
-
 
         case 4: // withdraw funds
             printf("Enter Withdrwal Amount: ");
@@ -130,31 +139,35 @@ int main()
             {
                 printf("Transaction Successful!\n\n");
                 totalAmount -= withdrawalAmount;
+
+                // generate receipt
+                FILE *fpointer = fopen("withdraw.pdf", "w");
+                fprintf(fpointer, "You Withdrew %d Successfully!", withdrawalAmount);
+                fclose(fpointer);
             }
             break;
 
+        case 5: // change account pin
+            printf("Enter Old Account Pin: ");
+            scanf("%d", &accountPin);
+            printf("Enter New Account Pin");
+            scanf("%d", &newAccountPin);
 
-            case 5: // change account pin
-                printf("Enter Old Account Pin: ");
-                scanf("%d", &accountPin);
-                printf("Enter New Account Pin");
-                scanf("%d", &newAccountPin);
+            if (accountPin == accountPin)
+            {
+                printf("Pin Changed Successful!\n");
+                accountPin = newAccountPin;
+            }
+            else
+            {
+                printf("Failed!\n\n");
+            }
 
-                if (accountPin == accountPin)
-                {
-                    printf("Pin Changed Successful!\n");
-                    accountPin = newAccountPin;
-                } else
-                {
-                    printf("Failed!\n\n");
-                }
-                
-                break;
-                
+            break;
 
-            case 6: // check balance
-                printf("Your Current Balance: $%d\n\n", totalAmount);
-                break;
+        case 6: // check balance
+            printf("Your Current Balance: $%d\n\n", totalAmount);
+            break;
         default:
             printf("Invalid Operation");
             break;
@@ -193,7 +206,6 @@ void mainMenu()
     printf("Press 5 - CHANGE PAYMENT PIN \n");
     printf("Press 6 - CHECK BALANCE \n\n");
 } // main menu
-
 
 void menuExit()
 {
